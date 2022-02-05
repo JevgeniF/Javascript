@@ -1,6 +1,9 @@
 'use strict';
 
 let calculateButtonClicked = false
+let lastNumberIsNegative = false
+
+let lastNumber = ''
 
 let displayInput = document.querySelector('#display-input')
 displayInput.value = 0;
@@ -26,6 +29,8 @@ numbers.forEach(item => {
         } else {
             displayInput.value += item.textContent;
         }
+        lastNumber += item.textContent;
+        console.log(lastNumber)
         calculateButtonClicked = false
     }
 })
@@ -44,6 +49,7 @@ operands.forEach(item => {
             displayInput.value = displayInput.value.slice(0, -1)
         }
         displayInput.value += item.textContent;
+        lastNumber = '';
     }
 })
 
@@ -51,21 +57,30 @@ let negativeButton = document.querySelector('#negative-button')
 
 //negative command
 negativeButton.onclick = () => {
-    let lastNumber = findLastNumber(displayInput.value);
-    if (lastNumber === 0) {
+    if (lastNumber === '') {
         return;
     } else {
         lastNumber = 0 - lastNumber;
+        lastNumberIsNegative = !lastNumberIsNegative;
     }
-    if (findLastOperandIndex(displayInput.value) !== 0) {
-        displayInput.value = displayInput.value = displayInput.value.slice(0, findLastOperandIndex(displayInput.value) + 1)
-        if (lastNumber < 0) {
-            displayInput.value += "(" + lastNumber + ")"
+    console.log(lastNumberIsNegative)
+
+    if (lastNumberIsNegative) {
+        if (displayInput.value.length - lastNumber.toString().length === -1) {
+            displayInput.value = lastNumber
         } else {
+            displayInput.value = displayInput.value.slice(0, -(lastNumber.toString().length - 1))
+            displayInput.value +="(" + lastNumber + ")"
+        }
+    }
+
+    if(!lastNumberIsNegative) {
+        if (displayInput.value.length - lastNumber.toString().length === 1) {
+            displayInput.value = lastNumber
+        } else {
+            displayInput.value = displayInput.value.slice(0, -(lastNumber.toString().length + 3))
             displayInput.value += lastNumber
         }
-    } else {
-        displayInput.value = lastNumber;
     }
 }
 
@@ -104,25 +119,8 @@ let clearButton = document.querySelector('#clear-button')
 //clear command
 clearButton.onclick = () => {
     displayInput.value = 0;
+    lastNumber = ''
     calculateButtonClicked = false
-}
-
-function findLastNumber(string) {
-    let tempDisplayInputValue = string
-    tempDisplayInputValue = tempDisplayInputValue.replaceAll(/(\+|\*|[+\-/])/g, " ")
-    let numbersInValue = tempDisplayInputValue.split(" ")
-    return numbersInValue[numbersInValue.length - 1]
-}
-
-function findLastOperandIndex(string) {
-    let index = 0
-    for (let i = 0; i < string.length; i++) {
-        if (isNaN(string.charAt(i))) {
-            if(string.charAt(i) !== '.') {
-                index = i;
-            }
-        }
-    }
-    return index;
+    lastNumberIsNegative = false
 }
 
