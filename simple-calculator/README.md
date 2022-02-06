@@ -3,7 +3,7 @@
 ## Description
 
 HTML version of calculator with simpliest operations: `+, -, *, /`  
-Scrip written in JS  
+Script is written in JS  
 The calculator takes 2 numbers, operator and returns answer just like usual real calulator.
 
 ## How to run
