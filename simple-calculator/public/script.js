@@ -24,6 +24,9 @@ let numbers = [num0, num1, num2, num3, num4, num5, num6, num7, num8, num9]
 //numbers command
 numbers.forEach(item => {
     item.onclick = () => {
+        if (lastNumberIsNegative) {
+            return
+        }
         if (displayInput.value === '0' || calculateButtonClicked) {
             displayInput.value = item.textContent;
         } else {
@@ -58,12 +61,11 @@ let negativeButton = document.querySelector('#negative-button')
 //negative command
 negativeButton.onclick = () => {
     if (lastNumber === '') {
-        return;
+        return
     } else {
         lastNumber = 0 - lastNumber;
         lastNumberIsNegative = !lastNumberIsNegative;
     }
-    console.log(lastNumberIsNegative)
 
     if (lastNumberIsNegative) {
         if (displayInput.value.length - lastNumber.toString().length === -1) {
@@ -82,23 +84,27 @@ negativeButton.onclick = () => {
             displayInput.value += lastNumber
         }
     }
+    console.log(lastNumber)
 }
 
 let decimalButton = document.querySelector('#decimal-button')
 
 //decimal command
 decimalButton.onclick = () => {
-    let lastNumber = findLastNumber(displayInput.value);
-    if (lastNumber.match(/^[0-9]+$/) ) {
-        lastNumber += decimalButton.textContent;
-
-        if (findLastOperandIndex(displayInput.value) !== 0) {
-            displayInput.value = displayInput.value.slice(0, findLastOperandIndex(displayInput.value) + 1)
+    if(lastNumberIsNegative) {
+        return
+    }
+    if (displayInput.value === '0') {
+        lastNumber = 0 + decimalButton.textContent
+        displayInput.value = lastNumber
+    } else {
+        if (lastNumber.toString().match(/^[0-9]+$/)) {
+            lastNumber += decimalButton.textContent;
+            displayInput.value = displayInput.value.slice(0, -(lastNumber.toString().length - 1))
             displayInput.value += lastNumber;
-        } else {
-            displayInput.value = lastNumber;
         }
     }
+    console.log(lastNumber)
 }
 
 let calculateButton = document.querySelector('#calculate-button')
