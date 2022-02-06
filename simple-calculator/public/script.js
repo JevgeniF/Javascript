@@ -43,10 +43,10 @@ let opsMulti = document.querySelector('#multiply-button')
 let opsMinus = document.querySelector('#minus-button')
 let opsPlus = document.querySelector('#plus-button')
 
-let operands = [opsDiv, opsMulti, opsMinus, opsPlus]
+let operators = [opsDiv, opsMulti, opsMinus, opsPlus]
 
-//operands command
-operands.forEach(item => {
+//operators command
+operators.forEach(item => {
     item.onclick = () => {
         if (isNaN(displayInput.value.charAt(displayInput.value.length - 1))) {
             displayInput.value = displayInput.value.slice(0, -1)
