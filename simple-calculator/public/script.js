@@ -24,9 +24,6 @@ let numbers = [num0, num1, num2, num3, num4, num5, num6, num7, num8, num9]
 //numbers command
 numbers.forEach(item => {
     item.onclick = () => {
-        if (lastNumberIsNegative) {
-            return
-        }
         if (displayInput.value === '0' || calculateButtonClicked) {
             displayInput.value = item.textContent;
         } else {
