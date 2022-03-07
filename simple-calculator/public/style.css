@@ -19,26 +19,26 @@
 }
 
 .num-button:focus {
-    background: black;
-    color: white;
+    background: black !important;;
+    color: white !important;;
 }
 
 .ops-button:focus {
-    background: white;
-    color: darkorange;
+    background: white !important;;
+    color: darkorange !important;;
 }
 
 .clear-button:focus {
-    background: white;
-    color: red;
+    background: white !important;;
+    color: red !important;;
 }
 
 .opt-button:focus {
-    background: white;
-    color: gray;
+    background: white !important;;
+    color: gray !important;;
 }
 
 .calculate-button:focus {
-    background: black;
-    color: #ffef00;
+    background: black !important;;
+    color: #ffef00 !important;;
 }
