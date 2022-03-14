@@ -5,25 +5,60 @@ class CalculatorBrain {
     calculateButtonClicked = false;
     lastNumberIsNegative = false;
 
-    displayValue = 0;
+    displayValue = '0';
 
     lastNumber = '';
 
-    insertInput(pressedButtonValue) {
-        if (this.displayValue === 0) {
-            this.displayValue = pressedButtonValue;
+    insertNumber(pressedNumberValue) {
+        if (this.displayValue === '0') {
+            this.displayValue = pressedNumberValue;
         } else {
-            this.displayValue += pressedButtonValue;
+            this.displayValue += pressedNumberValue;
         }
-        this.lastNumber += pressedButtonValue;
-        console.log(lastNumber)
+        this.lastNumber += pressedNumberValue;
+        console.log(this.lastNumber)
         this.calculateButtonClicked = false
+    }
+
+    insertOperator(pressedOperatorValue) {
+        if (isNaN(this.displayValue.charAt(this.displayValue.length - 1))) {
+            this.displayValue = this.displayValue.slice(0, -1)
+        }
+        this.displayValue += pressedOperatorValue;
+        lastNumber = '';
+    }
+
+    changeNumberToNegative() {
+        if (this.lastNumber === '') {
+            return;
+        } else {
+            this.lastNumber = 0 - this.lastNumber;
+            this.lastNumberIsNegative = !this.lastNumberIsNegative;
+        }
+        if (this.lastNumberIsNegative) {
+            if (this.displayValue.length - this.lastNumber.toString().length === -1) {
+                this.displayValue = this.lastNumber.toString()
+            } else {
+                this.displayValue = this.displayValue.slice(0, -(this.lastNumber.toString().length - 1))
+                this.displayValue +="(" + this.lastNumber + ")"
+            }
+        }
+        if(!this.lastNumberIsNegative) {
+            if (this.displayValue.length - this.lastNumber.toString().length === 1) {
+                this.displayValue = this.lastNumber.toString()
+            } else {
+                this.displayValue = this.displayValue.slice(0, -(this.lastNumber.toString().length + 3))
+                this.displayValue += this.lastNumber.toString()
+            }
+        }
     }
 }
 
 class CalculatorUI {
 
     numbers = []
+    operators = []
+    additionalParameters = []
 
     constructor(brain) {
         this.brain = brain;
@@ -46,12 +81,37 @@ class CalculatorUI {
 
         this.numbers.forEach(item => {
             item.onclick = this.numberClick; });
+
+        let opsDiv = document.querySelector('#divide-button')
+        let opsMulti = document.querySelector('#multiply-button')
+        let opsMinus = document.querySelector('#minus-button')
+        let opsPlus = document.querySelector('#plus-button')
+
+        this.operators = [opsDiv, opsMulti, opsMinus, opsPlus]
+
+        this.operators.forEach(item => {
+            item.onclick = this.operatorClick; });
+
+        let negativeButton = document.querySelector('#negative-button')
+        this.additionalParameters = [negativeButton]
+
+        this.additionalParameters.forEach(item => {
+            item.onclick = this.addParamClick; });
     }
 
-        numberClick = (event) => {
-            this.brain.insertInput(event.target.innerHTML)
-            console.log(event.target.innerHTML);
+    numberClick = (event) => {
+        this.brain.insertNumber(event.target.innerHTML)
+        console.log(event.target.innerHTML);
+    }
 
+    operatorClick = (event) => {
+        this.brain.insertOperator(event.target.innerHTML)
+        console.log(event.target.innerHTML);
+    }
+
+    addParamClick = (event) => {
+        this.brain.changeNumberToNegative()
+        console.log(event.target.id);
     }
 
 }
@@ -61,55 +121,8 @@ let lastNumberIsNegative = false
 let lastNumber = ''
 
 //numbers command
-
-let opsDiv = document.querySelector('#divide-button')
-let opsMulti = document.querySelector('#multiply-button')
-let opsMinus = document.querySelector('#minus-button')
-let opsPlus = document.querySelector('#plus-button')
-
-let operators = [opsDiv, opsMulti, opsMinus, opsPlus]
-
 //operators command
-operators.forEach(item => {
-    item.onclick = () => {
-        if (isNaN(displayInput.value.charAt(displayInput.value.length - 1))) {
-            displayInput.value = displayInput.value.slice(0, -1)
-        }
-        displayInput.value += item.textContent;
-        lastNumber = '';
-    }
-})
-
-let negativeButton = document.querySelector('#negative-button')
-
 //negative command
-negativeButton.onclick = () => {
-    if (lastNumber === '') {
-        return
-    } else {
-        lastNumber = 0 - lastNumber;
-        lastNumberIsNegative = !lastNumberIsNegative;
-    }
-
-    if (lastNumberIsNegative) {
-        if (displayInput.value.length - lastNumber.toString().length === -1) {
-            displayInput.value = lastNumber
-        } else {
-            displayInput.value = displayInput.value.slice(0, -(lastNumber.toString().length - 1))
-            displayInput.value +="(" + lastNumber + ")"
-        }
-    }
-
-    if(!lastNumberIsNegative) {
-        if (displayInput.value.length - lastNumber.toString().length === 1) {
-            displayInput.value = lastNumber
-        } else {
-            displayInput.value = displayInput.value.slice(0, -(lastNumber.toString().length + 3))
-            displayInput.value += lastNumber
-        }
-    }
-    console.log(lastNumber)
-}
 
 let decimalButton = document.querySelector('#decimal-button')
 
