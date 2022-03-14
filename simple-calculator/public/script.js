@@ -16,7 +16,7 @@ class CalculatorBrain {
             this.displayValue += pressedNumberValue;
         }
         this.lastNumber += pressedNumberValue;
-        console.log(this.lastNumber)
+        console.log(this.displayValue)
         this.calculateButtonClicked = false
     }
 
@@ -25,7 +25,7 @@ class CalculatorBrain {
             this.displayValue = this.displayValue.slice(0, -1)
         }
         this.displayValue += pressedOperatorValue;
-        lastNumber = '';
+        this.lastNumber = '';
     }
 
     changeNumberToNegative() {
@@ -37,7 +37,7 @@ class CalculatorBrain {
         }
         if (this.lastNumberIsNegative) {
             if (this.displayValue.length - this.lastNumber.toString().length === -1) {
-                this.displayValue = this.lastNumber.toString()
+                this.displayValue = this.lastNumber
             } else {
                 this.displayValue = this.displayValue.slice(0, -(this.lastNumber.toString().length - 1))
                 this.displayValue +="(" + this.lastNumber + ")"
@@ -45,12 +45,47 @@ class CalculatorBrain {
         }
         if(!this.lastNumberIsNegative) {
             if (this.displayValue.length - this.lastNumber.toString().length === 1) {
-                this.displayValue = this.lastNumber.toString()
+                this.displayValue = this.lastNumber
             } else {
                 this.displayValue = this.displayValue.slice(0, -(this.lastNumber.toString().length + 3))
-                this.displayValue += this.lastNumber.toString()
+                this.displayValue += this.lastNumber
             }
         }
+    }
+
+    numberWithDecimal() {
+        if(this.lastNumberIsNegative) {
+            return
+        }
+        if (this.displayValue === '0') {
+            this.lastNumber = this.displayValue + "."
+            this.displayValue = this.lastNumber
+        } else {
+            if (this.lastNumber.toString().match(/^[0-9]+$/)) {
+                this.lastNumber += ".";
+                this.displayValue = this.displayValue.slice(0, -(this.lastNumber.toString().length - 1))
+                this.displayValue += this.lastNumber;
+            }
+        }
+        console.log(this.lastNumber)
+    }
+
+    evaluate() {
+        if (eval(this.displayValue) === Infinity || isNaN(eval(this.displayValue))) {
+            this.displayValue = "How dare you?"
+        } else {
+            this.displayValue = eval(this.displayValue)
+            this.lastNumber = this.displayValue
+        }
+        this.calculateButtonClicked = true
+        console.log(this.lastNumber)
+    }
+
+    clear() {
+        this.displayValue = 0;
+        this.lastNumber = ''
+        this.calculateButtonClicked = false
+        this.lastNumberIsNegative = false
     }
 }
 
@@ -59,6 +94,7 @@ class CalculatorUI {
     numbers = []
     operators = []
     additionalParameters = []
+    evaluationAndDeletion = []
 
     constructor(brain) {
         this.brain = brain;
@@ -93,79 +129,43 @@ class CalculatorUI {
             item.onclick = this.operatorClick; });
 
         let negativeButton = document.querySelector('#negative-button')
-        this.additionalParameters = [negativeButton]
+        let decimalButton = document.querySelector('#decimal-button')
+        this.additionalParameters = [negativeButton, decimalButton]
 
-        this.additionalParameters.forEach(item => {
-            item.onclick = this.addParamClick; });
+        this.additionalParameters[0].onclick = this.negativeClick;
+        this.additionalParameters[1].onclick = this.decimalClick;
+
+        let calculateButton = document.querySelector('#calculate-button')
+        let clearButton = document.querySelector('#clear-button')
+        this.evaluationAndDeletion = [calculateButton, clearButton];
+
+        this.evaluationAndDeletion[0].onclick = this.evaluateClick;
+        this.evaluationAndDeletion[1].onclick = this.clearClick;
     }
 
     numberClick = (event) => {
         this.brain.insertNumber(event.target.innerHTML)
-        console.log(event.target.innerHTML);
     }
 
     operatorClick = (event) => {
         this.brain.insertOperator(event.target.innerHTML)
-        console.log(event.target.innerHTML);
     }
 
-    addParamClick = (event) => {
+    negativeClick = () => {
         this.brain.changeNumberToNegative()
-        console.log(event.target.id);
     }
 
-}
-let calculateButtonClicked = false
-let lastNumberIsNegative = false
-
-let lastNumber = ''
-
-//numbers command
-//operators command
-//negative command
-
-let decimalButton = document.querySelector('#decimal-button')
-
-//decimal command
-decimalButton.onclick = () => {
-    if(lastNumberIsNegative) {
-        return
+    decimalClick = () => {
+        this.brain.numberWithDecimal()
     }
-    if (displayInput.value === '0') {
-        lastNumber = 0 + decimalButton.textContent
-        displayInput.value = lastNumber
-    } else {
-        if (lastNumber.toString().match(/^[0-9]+$/)) {
-            lastNumber += decimalButton.textContent;
-            displayInput.value = displayInput.value.slice(0, -(lastNumber.toString().length - 1))
-            displayInput.value += lastNumber;
-        }
+
+    evaluateClick = () => {
+        this.brain.evaluate()
     }
-    console.log(lastNumber)
-}
 
-let calculateButton = document.querySelector('#calculate-button')
-
-//calculate command
-calculateButton.onclick = () => {
-    // if division by 0 or 0/0
-    if (eval(displayInput.value) === Infinity || isNaN(eval(displayInput.value))) {
-        displayInput.value = "How dare you?"
-    } else {
-        displayInput.value = eval(displayInput.value)
-        lastNumber = displayInput.value
+    clearClick = () => {
+        this.brain.clear();
     }
-    calculateButtonClicked = true
-}
-
-let clearButton = document.querySelector('#clear-button')
-
-//clear command
-clearButton.onclick = () => {
-    displayInput.value = 0;
-    lastNumber = ''
-    calculateButtonClicked = false
-    lastNumberIsNegative = false
 }
 
 let brain = new CalculatorBrain();
