@@ -1,28 +1,28 @@
 'use strict';
 
-
 class CalculatorBrain {
     calculateButtonClicked = false;
     lastNumberIsNegative = false;
 
-    displayValue = '0';
+    displayValue = 0;
 
     lastNumber = '';
 
     insertNumber(pressedNumberValue) {
-        if (this.displayValue === '0') {
+        if (this.displayValue === 0) {
             this.displayValue = pressedNumberValue;
         } else {
             this.displayValue += pressedNumberValue;
         }
         this.lastNumber += pressedNumberValue;
-        console.log(this.displayValue)
         this.calculateButtonClicked = false
     }
 
     insertOperator(pressedOperatorValue) {
-        if (isNaN(this.displayValue.charAt(this.displayValue.length - 1))) {
-            this.displayValue = this.displayValue.slice(0, -1)
+        if (!this.displayValue.toString().match(/^[+\-0-9]\d*(\.\d+)?$/)
+            && this.displayValue.toString().charAt(this.displayValue.length - 1) !== ")") {
+            console.log(this.displayValue);
+            this.displayValue = this.displayValue.toString().slice(0, -1)
         }
         this.displayValue += pressedOperatorValue;
         this.lastNumber = '';
@@ -47,7 +47,7 @@ class CalculatorBrain {
             if (this.displayValue.length - this.lastNumber.toString().length === 1) {
                 this.displayValue = this.lastNumber
             } else {
-                this.displayValue = this.displayValue.slice(0, -(this.lastNumber.toString().length + 3))
+                this.displayValue = this.displayValue.toString().slice(0, -(this.lastNumber.toString().length + 3))
                 this.displayValue += this.lastNumber
             }
         }
@@ -57,11 +57,11 @@ class CalculatorBrain {
         if(this.lastNumberIsNegative) {
             return
         }
-        if (this.displayValue === '0') {
+        if (this.displayValue === 0) {
             this.lastNumber = this.displayValue + "."
             this.displayValue = this.lastNumber
         } else {
-            if (this.lastNumber.toString().match(/^[0-9]+$/)) {
+            if (this.lastNumber.toString().match(/^[0-9.]+$/)) {
                 this.lastNumber += ".";
                 this.displayValue = this.displayValue.slice(0, -(this.lastNumber.toString().length - 1))
                 this.displayValue += this.lastNumber;
@@ -145,28 +145,41 @@ class CalculatorUI {
 
     numberClick = (event) => {
         this.brain.insertNumber(event.target.innerHTML)
+        this.update();
     }
 
     operatorClick = (event) => {
         this.brain.insertOperator(event.target.innerHTML)
+        this.update();
     }
 
     negativeClick = () => {
         this.brain.changeNumberToNegative()
+        this.update();
     }
 
     decimalClick = () => {
         this.brain.numberWithDecimal()
+        this.update();
     }
 
     evaluateClick = () => {
         this.brain.evaluate()
+        this.update();
     }
 
     clearClick = () => {
         this.brain.clear();
+        this.update();
+    }
+
+    update() {
+        let displayInput = document.querySelector('#display-input');
+        displayInput.value = this.brain.displayValue;
     }
 }
 
 let brain = new CalculatorBrain();
 let ui = new CalculatorUI(brain);
+
+ui.update(brain);
