@@ -24,7 +24,7 @@ let numbers = [num0, num1, num2, num3, num4, num5, num6, num7, num8, num9]
 //numbers command
 numbers.forEach(item => {
     item.onclick = () => {
-        if (displayInput.value === '0' || calculateButtonClicked) {
+        if (displayInput.value === '0') {
             displayInput.value = item.textContent;
         } else {
             displayInput.value += item.textContent;
@@ -113,6 +113,7 @@ calculateButton.onclick = () => {
         displayInput.value = "How dare you?"
     } else {
         displayInput.value = eval(displayInput.value)
+        lastNumber = displayInput.value
     }
     calculateButtonClicked = true
 }
