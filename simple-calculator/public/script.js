@@ -1,39 +1,66 @@
 'use strict';
 
+
+class CalculatorBrain {
+    calculateButtonClicked = false;
+    lastNumberIsNegative = false;
+
+    displayValue = 0;
+
+    lastNumber = '';
+
+    insertInput(pressedButtonValue) {
+        if (this.displayValue === 0) {
+            this.displayValue = pressedButtonValue;
+        } else {
+            this.displayValue += pressedButtonValue;
+        }
+        this.lastNumber += pressedButtonValue;
+        console.log(lastNumber)
+        this.calculateButtonClicked = false
+    }
+}
+
+class CalculatorUI {
+
+    numbers = []
+
+    constructor(brain) {
+        this.brain = brain;
+
+        let displayInput = document.querySelector('#display-input');
+        displayInput.value = brain.displayValue;
+
+        let num0 = document.querySelector('#num0-button')
+        let num1 = document.querySelector('#num1-button')
+        let num2 = document.querySelector('#num2-button')
+        let num3 = document.querySelector('#num3-button')
+        let num4 = document.querySelector('#num4-button')
+        let num5 = document.querySelector('#num5-button')
+        let num6 = document.querySelector('#num6-button')
+        let num7 = document.querySelector('#num7-button')
+        let num8 = document.querySelector('#num8-button')
+        let num9 = document.querySelector('#num9-button')
+
+        this.numbers = [num0, num1, num2, num3, num4, num5, num6, num7, num8, num9]
+
+        this.numbers.forEach(item => {
+            item.onclick = this.numberClick; });
+    }
+
+        numberClick = (event) => {
+            this.brain.insertInput(event.target.innerHTML)
+            console.log(event.target.innerHTML);
+
+    }
+
+}
 let calculateButtonClicked = false
 let lastNumberIsNegative = false
 
 let lastNumber = ''
 
-let displayInput = document.querySelector('#display-input')
-displayInput.value = 0;
-
-let num0 = document.querySelector('#num0-button')
-let num1 = document.querySelector('#num1-button')
-let num2 = document.querySelector('#num2-button')
-let num3 = document.querySelector('#num3-button')
-let num4 = document.querySelector('#num4-button')
-let num5 = document.querySelector('#num5-button')
-let num6 = document.querySelector('#num6-button')
-let num7 = document.querySelector('#num7-button')
-let num8 = document.querySelector('#num8-button')
-let num9 = document.querySelector('#num9-button')
-
-let numbers = [num0, num1, num2, num3, num4, num5, num6, num7, num8, num9]
-
 //numbers command
-numbers.forEach(item => {
-    item.onclick = () => {
-        if (displayInput.value === '0') {
-            displayInput.value = item.textContent;
-        } else {
-            displayInput.value += item.textContent;
-        }
-        lastNumber += item.textContent;
-        console.log(lastNumber)
-        calculateButtonClicked = false
-    }
-})
 
 let opsDiv = document.querySelector('#divide-button')
 let opsMulti = document.querySelector('#multiply-button')
@@ -128,3 +155,5 @@ clearButton.onclick = () => {
     lastNumberIsNegative = false
 }
 
+let brain = new CalculatorBrain();
+let ui = new CalculatorUI(brain);
