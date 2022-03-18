@@ -6,20 +6,6 @@
     font-family: 'Jura', sans-serif;
 }
 
-.num-button,
-.ops-button,
-.clear-button,
-.opt-button,
-.calculate-button,
-.sci-button {
-    height: 55px;
-    width: 55px;
-}
-
-.calculate-button {
-    width: 31%;
-}
-
 .num-button:focus {
     background: black !important;;
     color: white !important;;
