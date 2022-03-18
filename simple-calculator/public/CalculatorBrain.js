@@ -81,6 +81,9 @@ export default class CalculatorBrain {
 
     deleteOneCharacter() {
         this.displayValue = this.displayValue.slice(0, -1);
+        if (this.displayValue.toString().length === 0) {
+            this.displayValue = '0';
+        }
     }
 
     clear() {
