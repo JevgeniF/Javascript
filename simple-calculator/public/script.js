@@ -2,6 +2,8 @@ import CalculatorBrain from "./CalculatorBrain.js";
 import CalculatorUI from "./CalculatorUI.js";
 import UIElements from "./UIElements.js";
 
+document.getElementById("body").style.fontFamily = "Jura, sans-serif"
+
 let uiElements = new UIElements();
 let calculatorUIs = [];
 

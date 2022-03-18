@@ -9,24 +9,17 @@ export default class CalculatorUI {
         this.brain = brain;
         this.calculatorNo = calculatorNo;
 
-        let displayInput = document.querySelector(`.calculator-${this.calculatorNo}.display-input`)
+        let displayInput = document.querySelector(`.calculator-${this.calculatorNo}.display-input`);
         displayInput.value = brain.displayValue;
 
-        let num0 = document.querySelector(`.calculator-${this.calculatorNo}.button-0`);
-        let num1 = document.querySelector(`.calculator-${this.calculatorNo}.button-1`);
-        let num2 = document.querySelector(`.calculator-${this.calculatorNo}.button-2`);
-        let num3 = document.querySelector(`.calculator-${this.calculatorNo}.button-3`);
-        let num4 = document.querySelector(`.calculator-${this.calculatorNo}.button-4`);
-        let num5 = document.querySelector(`.calculator-${this.calculatorNo}.button-5`);
-        let num6 = document.querySelector(`.calculator-${this.calculatorNo}.button-6`);
-        let num7 = document.querySelector(`.calculator-${this.calculatorNo}.button-7`);
-        let num8 = document.querySelector(`.calculator-${this.calculatorNo}.button-8`);
-        let num9 = document.querySelector(`.calculator-${this.calculatorNo}.button-9`);
-
-        this.numbers = [num0, num1, num2, num3, num4, num5, num6, num7, num8, num9];
+        for (let i = 0; i < 10; i++) {
+            let num = document.querySelector(`.calculator-${this.calculatorNo}.button-${i}`);
+            this.numbers.push(num);
+        }
 
         this.numbers.forEach(item => {
-            item.onclick = this.numberClick; });
+            item.onclick = this.numberClick;
+        });
 
         let opsDiv = document.querySelector(`.calculator-${this.calculatorNo}.button-divide`);
         let opsMulti = document.querySelector(`.calculator-${this.calculatorNo}.button-multiply`);
