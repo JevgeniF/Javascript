@@ -58,37 +58,37 @@ export default class CalculatorUI {
         this.evaluationAndDeletion[2].onclick = this.clearClick;
     }
 
-    numberClick(event: Event): void {
+    numberClick = (event: Event): void => {
         this.brain.insertNumber((event.target! as HTMLButtonElement).innerHTML)
         this.update();
     }
 
-    operatorClick(event: Event): void {
+    operatorClick = (event: Event): void => {
         this.brain.insertOperator((event.target! as HTMLButtonElement).innerHTML);
         this.update();
     }
 
-    negativeClick(): void {
+    negativeClick = (): void => {
         this.brain.changeNumberToNegative();
         this.update();
     }
 
-    decimalClick(): void {
+    decimalClick = (): void => {
         this.brain.numberWithDecimal();
         this.update();
     }
 
-    evaluateClick(): void {
+    evaluateClick = (): void => {
         this.brain.evaluate();
         this.update();
     }
 
-    backspaceClick(): void {
+    backspaceClick = (): void => {
         this.brain.deleteOneCharacter();
         this.update();
     }
 
-    clearClick(): void {
+    clearClick = (): void => {
         this.brain.clear();
         this.update();
     }
