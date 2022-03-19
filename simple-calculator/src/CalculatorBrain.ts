@@ -74,11 +74,10 @@ export default class CalculatorBrain {
         if (eval(this.displayValue) === Infinity || isNaN(eval(this.displayValue))) {
             this.displayValue = "How dare you?";
         } else {
-            this.displayValue = eval(this.displayValue);
+            this.displayValue = eval(this.displayValue).toString();
             this.lastNumber = this.displayValue;
         }
         this.calculateButtonClicked = true;
-        console.log(this.lastNumber);
     }
 
     deleteOneCharacter(): void {

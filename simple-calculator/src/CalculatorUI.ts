@@ -9,48 +9,48 @@ export default class CalculatorUI {
 
     constructor(private brain: CalculatorBrain, private calculatorNo: number) {
 
-        let displayInput =
-            document.querySelector(`.calculator-${this.calculatorNo}.display-input`) as HTMLInputElement;
+        let displayInput: HTMLInputElement =
+            document.querySelector(`.calculator-${this.calculatorNo}.display-input`)!;
         displayInput.value = brain.displayValue;
 
         for (let i = 0; i < 10; i++) {
-            let num =
-                document.querySelector(`.calculator-${this.calculatorNo}.button-${i}`) as HTMLButtonElement;
+            let num: HTMLButtonElement =
+                document.querySelector(`.calculator-${this.calculatorNo}.button-${i}`)!;
             this.numbers.push(num);
         }
         this.numbers.forEach(item => {
             item.onclick = this.numberClick;
         });
 
-        let opsDiv =
-            document.querySelector(`.calculator-${this.calculatorNo}.button-divide`) as HTMLButtonElement;
-        let opsMulti =
-            document.querySelector(`.calculator-${this.calculatorNo}.button-multiply`) as HTMLButtonElement;
-        let opsMinus =
-            document.querySelector(`.calculator-${this.calculatorNo}.button-minus`) as HTMLButtonElement;
-        let opsPlus =
-            document.querySelector(`.calculator-${this.calculatorNo}.button-plus`) as HTMLButtonElement;
+        let opsDiv: HTMLButtonElement =
+            document.querySelector(`.calculator-${this.calculatorNo}.button-divide`)!;
+        let opsMulti: HTMLButtonElement =
+            document.querySelector(`.calculator-${this.calculatorNo}.button-multiply`)!;
+        let opsMinus: HTMLButtonElement =
+            document.querySelector(`.calculator-${this.calculatorNo}.button-minus`)!;
+        let opsPlus: HTMLButtonElement =
+            document.querySelector(`.calculator-${this.calculatorNo}.button-plus`)!;
 
         this.operators = [opsDiv, opsMulti, opsMinus, opsPlus];
         this.operators.forEach(item => {
             item.onclick = this.operatorClick;
         });
 
-        let negativeButton =
-            document.querySelector(`.calculator-${this.calculatorNo}.button-negative`) as HTMLButtonElement;
-        let decimalButton =
-            document.querySelector(`.calculator-${this.calculatorNo}.button-decimal`) as HTMLButtonElement;
+        let negativeButton: HTMLButtonElement =
+            document.querySelector(`.calculator-${this.calculatorNo}.button-negative`)!;
+        let decimalButton: HTMLButtonElement =
+            document.querySelector(`.calculator-${this.calculatorNo}.button-decimal`)!;
 
         this.additionalParameters = [negativeButton, decimalButton];
         this.additionalParameters[0].onclick = this.negativeClick;
         this.additionalParameters[1].onclick = this.decimalClick;
 
-        let calculateButton =
-            document.querySelector(`.calculator-${this.calculatorNo}.button-calculate`) as HTMLButtonElement;
-        let backspaceButton =
-            document.querySelector(`.calculator-${this.calculatorNo}.button-backspace`) as HTMLButtonElement;
-        let clearButton =
-            document.querySelector(`.calculator-${this.calculatorNo}.button-clear`) as HTMLButtonElement;
+        let calculateButton: HTMLButtonElement =
+            document.querySelector(`.calculator-${this.calculatorNo}.button-calculate`)!;
+        let backspaceButton: HTMLButtonElement =
+            document.querySelector(`.calculator-${this.calculatorNo}.button-backspace`)!;
+        let clearButton: HTMLButtonElement =
+            document.querySelector(`.calculator-${this.calculatorNo}.button-clear`)!;
 
         this.evaluationAndDeletion = [calculateButton, backspaceButton, clearButton];
         this.evaluationAndDeletion[0].onclick = this.evaluateClick;
@@ -59,12 +59,16 @@ export default class CalculatorUI {
     }
 
     numberClick = (event: Event): void => {
-        this.brain.insertNumber((event.target! as HTMLButtonElement).innerHTML)
+        if (event.target instanceof HTMLButtonElement) {
+            this.brain.insertNumber(event.target.innerHTML);
+        }
         this.update();
     }
 
     operatorClick = (event: Event): void => {
-        this.brain.insertOperator((event.target! as HTMLButtonElement).innerHTML);
+        if (event.target instanceof HTMLButtonElement) {
+            this.brain.insertOperator(event.target.innerHTML);
+        }
         this.update();
     }
 
@@ -94,8 +98,8 @@ export default class CalculatorUI {
     }
 
     update(): void {
-        let displayInput =
-            document.querySelector(`.calculator-${this.calculatorNo}.display-input`) as HTMLInputElement
+        let displayInput: HTMLButtonElement =
+            document.querySelector(`.calculator-${this.calculatorNo}.display-input`)!;
         displayInput!.value = this.brain.displayValue;
     }
 }
