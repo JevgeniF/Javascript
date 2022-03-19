@@ -1,9 +1,7 @@
 export default class CalculatorBrain {
-    calculateButtonClicked = false;
+
     lastNumberIsNegative = false;
-
     displayValue: string = '0';
-
     lastNumber: string = '';
 
     insertNumber(pressedNumberValue: string): void {
@@ -13,7 +11,6 @@ export default class CalculatorBrain {
             this.displayValue += pressedNumberValue;
         }
         this.lastNumber += pressedNumberValue;
-        this.calculateButtonClicked = false;
     }
 
     insertOperator(pressedOperatorValue: string): void {
@@ -77,7 +74,6 @@ export default class CalculatorBrain {
             this.displayValue = eval(this.displayValue).toString();
             this.lastNumber = this.displayValue;
         }
-        this.calculateButtonClicked = true;
     }
 
     deleteOneCharacter(): void {
@@ -90,7 +86,6 @@ export default class CalculatorBrain {
     clear(): void {
         this.displayValue = '0';
         this.lastNumber = '';
-        this.calculateButtonClicked = false;
         this.lastNumberIsNegative = false;
     }
 }
