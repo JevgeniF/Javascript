@@ -3,8 +3,8 @@
 ## Description
 
 HTML version of calculator with simplest operations: `+, -, *, /`  
-Script is written in JS  
-The calculator takes 2 numbers, operator and returns the answer just like a normal real calculator.
+Script is written in TypeScript  
+The calculator takes numbers and operators and returns the answer just like a normal real calculator.
 
 ## How to run
 
@@ -25,6 +25,4 @@ If you see `How dare you?` message, then you have to repeat the math rule regard
 
 ***
 *Important! The work of the calculator was not checked in every browser.  
-Chrome was used during development*
-
-
+Edge was used during development*
