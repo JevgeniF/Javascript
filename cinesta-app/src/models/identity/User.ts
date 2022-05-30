@@ -1,0 +1,9 @@
+export interface User {
+    id: string;
+    email: string,
+    name: string,
+    surname: string,
+    roles: string[],
+    token: string
+    refreshToken: string
+}
