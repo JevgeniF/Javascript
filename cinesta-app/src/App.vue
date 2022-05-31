@@ -2,32 +2,71 @@
   <v-app>
     <v-app-bar style="display: flex; flex-direction: row;">
       <v-app-bar-title>Cinesta</v-app-bar-title>
-      <nav style="display: flex; flex-direction: row;">
-        <div v-if="isGuest === true">
-          <router-link style="text-decoration: none; color: inherit; margin: 6px;" to="/">
-            <v-icon>mdi-home</v-icon>
-          </router-link>
-          <router-link style="text-decoration: none; color: inherit; margin: 6px;" to="/login">
-            <v-icon>mdi-login</v-icon>
-          </router-link>
-        </div>
-        <div v-else>
-          <div v-if="isUser === true">
-            <SubscribedRouting v-if="isSubscribed === true"></SubscribedRouting>
-            <UnsubscribedRouting v-if="isSubscribed === false"></UnsubscribedRouting>
-          </div>
-          <AdminRouting v-if="isAdmin === true"></AdminRouting>
-          <router-link style="text-decoration: none; color: inherit; margin: 6px;" to="/logout">
-            <v-icon>mdi-logout</v-icon>
-          </router-link>
-        </div>
-        <div style="text-decoration: none; color: inherit; margin-left: 12px;">
-          <v-icon>mdi-web</v-icon>
-          <LocaleSwitch></LocaleSwitch>
-        </div>
-      </nav>
+      <div style="text-decoration: none; color: inherit; margin-left: 12px;">
+        <v-icon>mdi-web</v-icon>
+        <LocaleSwitch></LocaleSwitch>
+      </div>
     </v-app-bar>
-    <v-main>
+    <div class="ma-12 pa-12">
+      <v-card>
+        <v-navigation-drawer style="width: fit-content" permanent="true">
+          <v-list style="flex-direction: column">
+            <v-spacer style="height: 10px"></v-spacer>
+            <router-link style="text-decoration: none; color: inherit; margin: 30px" to="/">
+              {{t('Home')}}
+            </router-link>
+            <v-spacer style="height: 10px"></v-spacer>
+            <v-divider></v-divider>
+            <v-spacer style="height: 10px"></v-spacer>
+            <div v-if="isGuest === true">
+              <router-link style="text-decoration: none; color: inherit; margin: 30px" to="/login">
+                <v-icon style="margin-bottom: 4px">mdi-login</v-icon> {{t('Sign In')}}
+              </router-link>
+            </div>
+            <div v-else style="flex-direction: column">
+              <div v-if="isUser === true" style="flex-direction: column">
+                <router-link style="text-decoration: none; color: inherit; margin: 30px" to="/account">
+                  {{t('Account')}}
+                </router-link>
+                  <v-spacer style="height: 20px"></v-spacer>
+                  <router-link style="text-decoration: none; color: inherit; margin: 30px;" to="/profiles">
+                    {{t('Profiles')}}
+                  </router-link>
+                  <v-spacer style="height: 20px"></v-spacer>
+                  <router-link style="text-decoration: none; color: inherit; margin: 30px;" to="/subscribe">
+                    {{t('Subscription')}}
+                  </router-link>
+              </div>
+                <div v-if="isAdmin === true">
+                  <router-link style="text-decoration: none; color: inherit; margin: 30px" to="/account">
+                    {{t('Account')}}
+                  </router-link>
+                  <v-spacer style="height: 20px"></v-spacer>
+                  <router-link style="text-decoration: none; color: inherit; margin: 30px;" to="/profiles">
+                    {{t('Profiles')}}
+                  </router-link>
+                  <v-spacer style="height: 20px"></v-spacer>
+                  <router-link style="text-decoration: none; color: inherit; margin: 30px;" to="/subscribe">
+                    {{t('Subscription')}}
+                  </router-link>
+                  <v-spacer style="height: 20px"></v-spacer>
+                  <router-link style="text-decoration: none; color: inherit; margin: 30px;" to="/admin">
+                    {{t('Admin Panel')}}
+                  </router-link>
+                </div>
+              <v-spacer style="height: 10px"></v-spacer>
+              <v-divider></v-divider>
+              <v-spacer style="height: 10px"></v-spacer>
+                <v-spacer style="height: 10px"></v-spacer>
+                <router-link style="text-decoration: none; color: inherit; margin: 30px;" to="/logout">
+                  <v-icon style="margin-bottom: 4px">mdi-logout</v-icon> {{t('Sign Out')}}
+                </router-link>
+              </div>
+          </v-list>
+        </v-navigation-drawer>
+      </v-card>
+    </div>
+    <v-main class="center">
       <router-view />
     </v-main>
   </v-app>
@@ -35,17 +74,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import SubscribedRouting from './components/headers/SubscribedRouting.vue'
-import UnsubscribedRouting from './components/headers/UnsubscribedRouting.vue'
-import AdminRouting from './components/headers/AdminRouting.vue'
 import LocaleSwitch from './components/i18n/LocaleSwitch.vue'
 import UserServices from './services/UserServices'
-import SubscriptionServices from './services/SubscriptionServices'
-
+import { useI18n } from 'vue-i18n'
 export default defineComponent({
-  components: { SubscribedRouting, UnsubscribedRouting, AdminRouting, LocaleSwitch },
+  components: { LocaleSwitch },
   data() {
+    const { t } = useI18n()
     return {
+      t,
       isGuest: true as boolean,
       isUser: true as boolean,
       isSubscribed: true as boolean,
@@ -56,9 +93,6 @@ export default defineComponent({
 
     async checkUser() {
       return UserServices.GetUser()
-    },
-    async checkUserSubscription() {
-      return SubscriptionServices.GetUserSubscription()
     },
     checkLanguage() {
       if (!localStorage.getItem("lang")) {
@@ -75,7 +109,7 @@ export default defineComponent({
         this.isGuest = true;
         return
       }
-      const subscription = await this.checkUserSubscription()
+
       if (user.roles.includes("admin")) {
         this.isGuest = false;
         this.isUser = false;
@@ -88,9 +122,6 @@ export default defineComponent({
         this.isGuest = true;
         this.isUser = false;
         this.isAdmin = false;
-      }
-      if (this.isUser) {
-        this.isSubscribed = !!subscription;
       }
     }
   }

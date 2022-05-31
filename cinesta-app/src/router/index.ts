@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/identity/LoginView.vue'
 import LogoutComponent from '@/components/identity/Logout.vue'
 import RegisterView from '../views/identity/RegisterView.vue'
+import SubscriptionView from '@/views/SubscriptionView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -24,6 +25,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/register',
     name: 'register',
     component: RegisterView
+  },
+  {
+    path: '/subscribe',
+    name: 'subscribe',
+    component: SubscriptionView
   },
   {
     path: '/about',
