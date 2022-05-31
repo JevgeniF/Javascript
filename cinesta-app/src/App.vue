@@ -77,6 +77,7 @@ import { defineComponent } from 'vue'
 import LocaleSwitch from './components/i18n/LocaleSwitch.vue'
 import UserServices from './services/UserServices'
 import { useI18n } from 'vue-i18n'
+import SubscriptionServices from '@/services/SubscriptionServices'
 export default defineComponent({
   components: { LocaleSwitch },
   data() {
@@ -108,6 +109,13 @@ export default defineComponent({
       if (localStorage.getItem("user") == null) {
         this.isGuest = true;
         return
+      }
+      if (localStorage.getItem("user_subscription") == null) {
+        const subscription = await SubscriptionServices.GetUserSubscriptionFromApi()
+        if (subscription.id) {
+          await SubscriptionServices.SaveUserSubscription(subscription)
+          console.log(localStorage.getItem("user_subscription"))
+        }
       }
 
       if (user.roles.includes("admin")) {

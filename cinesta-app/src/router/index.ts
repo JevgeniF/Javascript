@@ -4,6 +4,8 @@ import LoginView from '../views/identity/LoginView.vue'
 import LogoutComponent from '@/components/identity/Logout.vue'
 import RegisterView from '../views/identity/RegisterView.vue'
 import SubscriptionView from '@/views/SubscriptionView.vue'
+import AccountView from '@/views/AccountView.vue'
+import ProfilesView from '@/views/ProfilesView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -30,6 +32,16 @@ const routes: Array<RouteRecordRaw> = [
     path: '/subscribe',
     name: 'subscribe',
     component: SubscriptionView
+  },
+  {
+    path: '/account',
+    name: 'account',
+    component: AccountView
+  },
+  {
+    path: '/profiles',
+    name: 'profiles',
+    component: ProfilesView
   },
   {
     path: '/about',

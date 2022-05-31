@@ -56,4 +56,13 @@ export default class SubscriptionServices {
         return res.status
       })
   }
+
+  static async DeleteUserSubscriptionFromApi (id: string) {
+    const tokenPromise = await UserServices.Tokens()
+    const axiosJwt = UserServices.AxiosJwt(tokenPromise.token)
+    return await axios.delete('usersubscriptions/' + id, axiosJwt)
+      .then((res) => {
+        return res.status
+      })
+  }
 }

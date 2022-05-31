@@ -41,13 +41,16 @@
     </v-col>
     <v-col class="mb-4">
       <p>{{ t('Thank you for choosing') }} {{ this.subscriptionName }}.</p>
+      <div v-if="this.hasPaymentDetails === false">
       <p>{{ t('Please fill your card details below and confirm payment or') }} <a
         style="color: red; text-decoration-line: underline" @click="cancelProcess">{{ t('cancel') }}</a>.</p>
+        </div>
       </v-col>
-    </v-row>
-    <v-card elevation="2" class="mx-auto"
+      </v-row>
+      <v-card elevation="2" class="mx-auto"
             width="400"
             outlined>
+        <div v-if="this.hasPaymentDetails === false">
       <v-col class="mx-auto">
         <form action="#" @submit.prevent="confirmSubscription">
           <div class="form-control">
@@ -72,15 +75,26 @@
             <div class="error" v-if="cardError">
               <span v-if="cardError" class="errorMessage">{{cardErrorMessage}}</span>
             </div>
-            <v-card-actions>
-            <v-btn type="submit"
-                   text
-            >Confirm
-            </v-btn>
-            </v-card-actions>
           </div>
         </form>
       </v-col>
+        <v-card-actions>
+          <v-btn type="submit" @click="confirmSubscription()"
+          >Confirm
+          </v-btn>
+        </v-card-actions>
+        </div>
+        <div v-else>
+          <v-col class="mx-auto">
+          <v-list-item-title class="text-h5 mb-1">{{ cardNumber }}</v-list-item-title>
+          <v-list-item-subtitle>{{ t('Saved payment method') }}</v-list-item-subtitle>
+          <v-card-actions>
+            <v-btn @click="saveNewSubscription()"
+            >Confirm
+            </v-btn>
+          </v-card-actions>
+          </v-col>
+        </div>
     </v-card>
   </div>
   </div>
@@ -117,6 +131,8 @@ export default defineComponent({
       subscriptions: [] as Subscription[],
       subscriptionName: '' as string,
       subscriptionValidity: moment(),
+      hasPaymentDetails: false,
+      paymentDetailsId: '',
       // subscriptionPrice: 0 as number
 
       cardName: '' as string,
@@ -139,6 +155,15 @@ export default defineComponent({
     }
   },
   methods: {
+    async getPaymentDetailsFromApi() {
+      const paymentDetails = await PaymentServices.GetPaymentDetails()
+      if (paymentDetails.id) {
+        this.hasPaymentDetails = true
+        const cardNumber = paymentDetails.cardNumber
+        this.paymentDetailsId = paymentDetails.id
+        this.cardNumber = cardNumber.slice(0, 4) + " **** **** ****"
+      }
+    },
     async getSubscriptions () {
       this.subscriptions = await SubscriptionServices.GetSubscriptions()
     },
@@ -183,31 +208,50 @@ export default defineComponent({
     },
     async confirmSubscription() {
       const subscription = SubscriptionServices.GetSubscription()
-      console.log(subscription)
-      if (!this.cardNumberError && !this.dateError && !this.cvcError && this.cardNumber !== '' && this.date !== '' && this.cvc !== '') {
-        const res = await PaymentServices.PostPaymentDetails(
-          this.cardName,
-          this.cardNumber,
-          this.dateUtc,
-          this.cvc)
-        if (res === 201) {
+      if (!this.hasValidSubscription) {
+        if (!this.cardNumberError && !this.dateError && !this.cvcError && this.cardNumber !== '' && this.date !== '' && this.cvc !== '') {
+          const res = await PaymentServices.PostPaymentDetails(
+            this.cardName,
+            this.cardNumber,
+            this.dateUtc,
+            this.cvc)
+          if (res === 201) {
             const resSub = await SubscriptionServices.PostUserSubscription(subscription)
             if (resSub === 201) {
-            await router.push('/')
+              await router.push('/')
             }
           }
-      } else this.cardError = true;
+        }
+      }
+      this.cardError = true;
+    },
+    async saveNewSubscription() {
+      const subscription = SubscriptionServices.GetSubscription()
+      const resSub = await SubscriptionServices.PostUserSubscription(subscription)
+      if (resSub === 201) {
+        await router.push('/')
+      }
+    },
+    async getUserSubscription() {
+      let subscription = null
+      if (localStorage.getItem("user_subscription") == null) {
+        subscription = await SubscriptionServices.GetUserSubscriptionFromApi()
+      } else {
+        subscription = SubscriptionServices.GetUserSubscription()
+        console.log(subscription)
+      }
+      if (subscription != null && subscription.id) {
+        if (Date.parse(subscription.expirationDateTime) > Date.now()) {
+          this.hasValidSubscription = true
+          this.subscriptionName = subscription.subscription.naming
+          this.subscriptionValidity = moment.utc(subscription.expirationDateTime).local()
+        }
+      }
     }
   },
   async beforeMount () {
-    const subscription = await SubscriptionServices.GetUserSubscriptionFromApi()
-    if (subscription.id) {
-      if (Date.parse(subscription.expirationDateTime) > Date.now()) {
-        this.hasValidSubscription = true
-        this.subscriptionName = subscription.subscription.naming
-        this.subscriptionValidity = moment.utc(subscription.expirationDateTime).local()
-      }
-    }
+    await this.getUserSubscription()
+    await this.getPaymentDetailsFromApi()
   },
   async mounted () {
     await this.getSubscriptions()
