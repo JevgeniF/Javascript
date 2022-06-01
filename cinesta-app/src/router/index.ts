@@ -6,6 +6,9 @@ import RegisterView from '../views/identity/RegisterView.vue'
 import SubscriptionView from '@/views/SubscriptionView.vue'
 import AccountView from '@/views/AccountView.vue'
 import ProfilesView from '@/views/ProfilesView.vue'
+import ProfileMoviesView from '@/views/ProfileMoviesView.vue'
+import MovieDetailsView from '@/views/MovieDetailsView.vue'
+import TheatreView from '@/views/TheatreView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -42,6 +45,21 @@ const routes: Array<RouteRecordRaw> = [
     path: '/profiles',
     name: 'profiles',
     component: ProfilesView
+  },
+  {
+    path: '/movies',
+    name: 'movies',
+    component: ProfileMoviesView
+  },
+  {
+    path: '/movie-details',
+    name: 'movieDetails',
+    component: MovieDetailsView
+  },
+  {
+    path: '/theatre',
+    name: 'theatre',
+    component: TheatreView
   },
   {
     path: '/about',

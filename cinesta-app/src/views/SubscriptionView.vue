@@ -234,9 +234,9 @@ export default defineComponent({
     },
     async getUserSubscription() {
       const subscription = await SubscriptionServices.GetUserSubscriptionFromApi()
-        console.log(subscription)
-      if (subscription.id) {
-        if (Date.parse(subscription.expirationDateTime) > Date.now()) {
+          console.log(subscription)
+          if (subscription.id) {
+            if (Date.parse(subscription.expirationDateTime) > Date.now()) {
           this.hasValidSubscription = true
           this.subscriptionName = subscription.subscription.naming
           this.subscriptionValidity = moment.utc(subscription.expirationDateTime).local()

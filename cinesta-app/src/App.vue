@@ -77,7 +77,6 @@ import { defineComponent } from 'vue'
 import LocaleSwitch from './components/i18n/LocaleSwitch.vue'
 import UserServices from './services/UserServices'
 import { useI18n } from 'vue-i18n'
-import SubscriptionServices from '@/services/SubscriptionServices'
 export default defineComponent({
   components: { LocaleSwitch },
   data() {

@@ -5,9 +5,9 @@
       </v-col>
       <v-col class="mb-4">
         <h2 class="display-2 font-weight-bold mb-3">
-          {{ ('You don\'t have subscription or it is expired.') }}
+          {{t ('You don\'t have subscription or it is expired.') }}
         </h2>
-        <p>{{ t('Please proceed to') }}<router-link to="/subscribe">{{('subscriptions')}}</router-link> and subscribe.</p>
+        <p>{{ t('Please proceed to') }}<router-link to="/subscribe">{{t('subscriptions')}}</router-link> and subscribe.</p>
       </v-col>
     </v-row>
   </div>
@@ -162,6 +162,7 @@ export default defineComponent({
     },
     async getUserProfiles () {
       this.profiles = await ProfileServices.GetUserProfiles()
+      console.log(this.profiles)
     }
   },
   async mounted () {
