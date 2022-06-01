@@ -1,0 +1,10 @@
+<ul class="nav-links" >
+    <li class="nav-link-single"><a load="/">Home</a></li>
+    <template repeat.for="nav of categories">
+        | <li class="nav-link-single"><a load="/category/${nav}">${nav}</a></li>
+    </template>
+</ul>
+<au-viewport></au-viewport>
+<footer class="border-top footer text-muted">
+        &copy; 2021 - Chuckie's joking about...
+</footer>

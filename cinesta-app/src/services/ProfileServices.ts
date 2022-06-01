@@ -2,8 +2,13 @@ import UserServices from '@/services/UserServices'
 
 import axios from 'axios'
 import UserProfile from '@/models/UserProfile'
+import { User } from '@/models/identity/User'
 
 export default class ProfileServices {
+  static async SaveProfile(profile: UserProfile): Promise<void> {
+    localStorage.setItem("profile", JSON.stringify(profile));
+  }
+
   static async GetUserProfiles () {
     const tokenPromise = await UserServices.Tokens()
     const axiosJwt = UserServices.AxiosJwt(tokenPromise.token)

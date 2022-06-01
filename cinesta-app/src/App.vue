@@ -110,14 +110,6 @@ export default defineComponent({
         this.isGuest = true;
         return
       }
-      if (localStorage.getItem("user_subscription") == null) {
-        const subscription = await SubscriptionServices.GetUserSubscriptionFromApi()
-        if (subscription.id) {
-          await SubscriptionServices.SaveUserSubscription(subscription)
-          console.log(localStorage.getItem("user_subscription"))
-        }
-      }
-
       if (user.roles.includes("admin")) {
         this.isGuest = false;
         this.isUser = false;
@@ -132,6 +124,6 @@ export default defineComponent({
         this.isAdmin = false;
       }
     }
-  }
+  },
 })
 </script>

@@ -28,12 +28,12 @@
       max-width="300"
       v-for="(profile) in this.profiles" :key="profile.id" v-bind:value="profile.id"
     >
-      <v-img
+      <v-img @click="goToProfileMovies(profile)"
         :src="profile.iconUri"
         height="150px"
       ></v-img>
 
-      <v-card-title>
+      <v-card-title @click="goToProfileMovies(profile)">
         {{profile.name}}
       </v-card-title>
       <v-card-actions>
@@ -46,7 +46,7 @@
     </v-card>
     </v-row>
   </div>
-  <div v-if="(this.profilesCountInSubscription - this.usedProfiles) > 0">
+  <div v-if="(this.profilesCountInSubscription - this.profiles.length) > 0">
     <v-row class="text-center">
     <v-col cols="12" v-if="addMode === false">
     </v-col>
@@ -83,6 +83,7 @@
         </form>
         <v-card-actions>
           <v-btn @click="addProfile()">Add</v-btn>
+          <v-btn @click="addMode = false">Cancel</v-btn>
         </v-card-actions>
       </v-card>
   </v-row></div>
@@ -94,6 +95,7 @@ import { useI18n } from 'vue-i18n'
 import SubscriptionServices from '@/services/SubscriptionServices'
 import ProfileServices from '@/services/ProfileServices'
 import UserProfile from '@/models/UserProfile'
+import router from '@/router'
 
 export default defineComponent({
   name: 'ProfilesView',
@@ -103,7 +105,6 @@ export default defineComponent({
       t,
       hasValidSubscription: false,
       profilesCountInSubscription: 0 as number,
-      usedProfiles: 0,
       profiles: [] as UserProfile[],
       addMode: false,
       uriError: false,
@@ -117,9 +118,12 @@ export default defineComponent({
     }
   },
   methods: {
+    goToProfileMovies(profile: UserProfile) {
+      ProfileServices.SaveProfile(profile)
+      router.push('/movies')
+    },
     async deleteProfile (id: string) {
       const res = await ProfileServices.deleteProfile(id)
-      this.usedProfiles -= 1
       console.log(res)
       await this.getUserProfiles()
     },
@@ -142,20 +146,14 @@ export default defineComponent({
       if (!this.uriError && !this.nameError && !this.ageError) {
         const res = await ProfileServices.PostUserProfile(this.imageUri, this.profileName, this.age)
         console.log(res)
-        this.usedProfiles += 1
         this.addMode = false
         await this.getUserProfiles()
       }
     },
     async getUserSubscription () {
-      let subscription = null
-      if (localStorage.getItem("user_subscription") == null) {
-        subscription = await SubscriptionServices.GetUserSubscriptionFromApi()
-      } else {
-        subscription = SubscriptionServices.GetUserSubscription()
-        console.log(subscription)
-      }
-      if (subscription != null && subscription.id) {
+      const subscription = await SubscriptionServices.GetUserSubscriptionFromApi()
+      console.log(subscription)
+      if (subscription.id) {
         if (Date.parse(subscription.expirationDateTime) > Date.now()) {
           this.hasValidSubscription = true
           this.profilesCountInSubscription = subscription.subscription.profilesCount

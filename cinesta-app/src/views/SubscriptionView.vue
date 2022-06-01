@@ -233,14 +233,9 @@ export default defineComponent({
       }
     },
     async getUserSubscription() {
-      let subscription = null
-      if (localStorage.getItem("user_subscription") == null) {
-        subscription = await SubscriptionServices.GetUserSubscriptionFromApi()
-      } else {
-        subscription = SubscriptionServices.GetUserSubscription()
+      const subscription = await SubscriptionServices.GetUserSubscriptionFromApi()
         console.log(subscription)
-      }
-      if (subscription != null && subscription.id) {
+      if (subscription.id) {
         if (Date.parse(subscription.expirationDateTime) > Date.now()) {
           this.hasValidSubscription = true
           this.subscriptionName = subscription.subscription.naming

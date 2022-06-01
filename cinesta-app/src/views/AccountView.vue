@@ -117,14 +117,9 @@ export default defineComponent({
       localStorage.removeItem("user_subscription")
     },
     async getUserSubscription() {
-      let subscription = null
-      if (localStorage.getItem("user_subscription") == null) {
-        subscription = await SubscriptionServices.GetUserSubscriptionFromApi()
-      } else {
-        subscription = SubscriptionServices.GetUserSubscription()
-        console.log(subscription)
-      }
-      if (subscription != null && subscription.id) {
+      const subscription = await SubscriptionServices.GetUserSubscriptionFromApi()
+      console.log(subscription)
+      if (subscription.id) {
         if (Date.parse(subscription.expirationDateTime) > Date.now()) {
           this.hasValidSubscription = true
           this.subscriptionId = subscription.id

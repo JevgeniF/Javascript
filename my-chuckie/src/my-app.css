@@ -1,0 +1,11 @@
+.message {
+  background-color: lightblue;
+}
+.nav-links{
+  list-style-type: none;
+  text-align: center;
+}
+.nav-link-single{
+  display: inline-block;
+  text-align: center;
+}
