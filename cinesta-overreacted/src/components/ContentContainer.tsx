@@ -5,10 +5,10 @@ interface Props {
     children: React.ReactNode;
 }
 
-const FormContainer = ({children}: Props) => {
+const ContentContainer = ({children}: Props) => {
     return (
         <Container className="py-5">
-            <Row className="justify-content-center">
+            <Row className="justify-content-md-center">
                 <Col xs={12} md={6}>
                     {children}
                 </Col>
@@ -17,4 +17,4 @@ const FormContainer = ({children}: Props) => {
     );
 }
 
-export default FormContainer;
+export default ContentContainer;

@@ -1,9 +1,11 @@
-import React, {SyntheticEvent, useState} from 'react';
-import FormContainer from "../components/FormContainer";
+import React, {SyntheticEvent, useEffect, useState} from 'react';
+import ContentContainer from "../components/ContentContainer";
 import {Button, Form} from "react-bootstrap";
 import {RouteComponentProps} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {signUp} from "../actions/userAction";
+import {RootState} from "../store/store";
+import {UserState} from "../reducers/userReducer";
 
 interface Props {
     history: RouteComponentProps['history']
@@ -17,6 +19,16 @@ const SignUp = ({history}: Props) => {
     const [password, setPassword] = useState('')
     const dispatch = useDispatch()
 
+    const userSign = useSelector<RootState, UserState>(state => state.userSign)
+    const {user} = userSign
+
+    useEffect(() => {
+        console.log(user)
+        if (user !== null && user !== undefined && user.name) {
+            history.push('/')
+        }
+    }, [user, history])
+
     const submitHandler = async (e: SyntheticEvent) => {
         e.preventDefault();
 
@@ -24,11 +36,10 @@ const SignUp = ({history}: Props) => {
         dispatch(signUp(firstName, lastName, email, password))
 
         console.log('submitHandler: SignUp')
-        history.push('/')
     }
 
     return (
-        <FormContainer>
+        <ContentContainer>
             <h1>Sign Up</h1>
             <Form className="py-5"
                   onSubmit={submitHandler}>
@@ -56,7 +67,7 @@ const SignUp = ({history}: Props) => {
                     Sign Up
                 </Button>
             </Form>
-        </FormContainer>
+        </ContentContainer>
     )
 }
 

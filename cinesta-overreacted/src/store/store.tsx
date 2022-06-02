@@ -3,12 +3,21 @@ import thunk from "redux-thunk";
 import {composeWithDevTools} from "redux-devtools-extension";
 import {userSignReducer} from "../reducers/userReducer";
 import AuthenticationService from '../services/identity/AuthenticationService';
+import {profileReducer} from "../reducers/profileReducer";
+import {paymentDetailsReducer} from "../reducers/paymentDetailsReducer";
+import {subscriptionReducer} from "../reducers/subscriptionReducer";
+import {userSubscriptionReducer} from "../reducers/userSubscriptionReducer";
 
 const reducers = combineReducers({
-    userSign: userSignReducer
+    userSign: userSignReducer,
+    userSubscription: userSubscriptionReducer,
+    subscription: subscriptionReducer,
+    paymentDetails: paymentDetailsReducer,
+    profile: profileReducer
+
 })
 
-const userFromLocalStorage = AuthenticationService.GetUserFromLocalStorage()
+const userFromLocalStorage = AuthenticationService.RestoreUserFromLocalStorage()
 
 const initialState = {
     userSign: {user: userFromLocalStorage}

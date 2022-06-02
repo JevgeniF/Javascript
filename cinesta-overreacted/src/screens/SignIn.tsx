@@ -1,11 +1,14 @@
 import {SyntheticEvent, useEffect, useState} from 'react';
 import {Button, Form} from 'react-bootstrap';
-import FormContainer from "../components/FormContainer";
+import ContentContainer from "../components/ContentContainer";
 import {RouteComponentProps} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
 import {signIn} from "../actions/userAction";
 import {RootState} from "../store/store";
 import {UserState} from "../reducers/userReducer";
+import {getUserSubscription} from "../actions/userSubscriptionAction";
+import {getPaymentDetails} from "../actions/paymentDetailsAction";
+import {getProfiles} from "../actions/profileAction";
 
 interface Props {
     history: RouteComponentProps['history']
@@ -32,12 +35,18 @@ const SignIn = ({history}: Props) => {
 
         // @ts-ignore
         dispatch(signIn(email, password))
+        // @ts-ignore
+        dispatch(getUserSubscription())
+        // @ts-ignore
+        dispatch(getPaymentDetails())
+        // @ts-ignore
+        dispatch(getProfiles())
 
         console.log('submitHandler: SignIn')
     }
 
     return (
-        <FormContainer>
+        <ContentContainer>
             <h1>Sign In</h1>
             <Form className="py-5"
                   onSubmit={submitHandler}>
@@ -55,7 +64,7 @@ const SignIn = ({history}: Props) => {
                     Sign In
                 </Button>
             </Form>
-        </FormContainer>
+        </ContentContainer>
     )
 }
 
