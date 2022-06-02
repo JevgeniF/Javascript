@@ -15,10 +15,10 @@ const Subscribe = () => {
     const history = useHistory()
 
     const sub = useSelector<RootState, SubscriptionState>(state => state.subscription)
-    const { subscriptions } = sub
+    const {subscriptions} = sub
 
     const paymentDetails = useSelector<RootState, PaymentDetailsState>(state => state.paymentDetails)
-    const { payment } = paymentDetails
+    const {payment} = paymentDetails
 
     const [subscriptionIndex, setSubscriptionIndex] = useState(-1)
     const [cardNumber, setCardNumber] = useState('')
@@ -32,16 +32,16 @@ const Subscribe = () => {
     for (let i = 0; i < subscriptions.length; i++) {
         subscriptionCards.push(
             <Col key={i}>
-            <Card className="h-100">
-                <Card.Header>{subscriptions[i].naming}</Card.Header>
-                <Card.Body className="d-flex flex-column">
-                    <Card.Title>{subscriptions[i].description}</Card.Title>
-                    <Card.Text>{subscriptions[i].profilesCount} profiles</Card.Text>
-                    <Card.Text>{subscriptions[i].price} EUR</Card.Text>
-                    <Button variant="primary" className="mt-auto" onClick={() => setSubscriptionIndex(i)}>
-                        Select</Button>
-                </Card.Body>
-            </Card>
+                <Card className="h-100">
+                    <Card.Header>{subscriptions[i].naming}</Card.Header>
+                    <Card.Body className="d-flex flex-column">
+                        <Card.Title>{subscriptions[i].description}</Card.Title>
+                        <Card.Text>{subscriptions[i].profilesCount} profiles</Card.Text>
+                        <Card.Text>{subscriptions[i].price} EUR</Card.Text>
+                        <Button variant="primary" className="mt-auto" onClick={() => setSubscriptionIndex(i)}>
+                            Select</Button>
+                    </Card.Body>
+                </Card>
             </Col>
         )
     }
@@ -59,7 +59,7 @@ const Subscribe = () => {
         const cvcRegex = /^\d{3}$/
         const date = new Date(Number(cardValidityDate.slice(3)), Number(cardValidityDate.slice(0, 2)))
         let cardName = ''
-        if(!payment.cardNumber) {
+        if (!payment.cardNumber) {
             if (cardNumber.length !== 16) {
                 setError(true)
                 setErrorMessage('Please check card number length')
@@ -107,49 +107,49 @@ const Subscribe = () => {
     return (
         <div className="py-5">
 
-                <Row>
-                    {subscriptionCards}
+            <Row>
+                {subscriptionCards}
             </Row>
-                {subscriptionIndex >= 0 ?
-                    <ContentContainer>
-                        <Card className="h-100">
-                            <Card.Header>Payment details</Card.Header>
-                            <Card.Body className="d-flex flex-column">
-                                {error ? <Card.Text className="error">{errorMessage}</Card.Text> : <></>}
-                                <Form className="d-flex flex-column" onSubmit={submitHandler}>
-                                    {payment.cardNumber ? <><Card.Title>Card number
-                                            is {payment.cardNumber.slice(0, 4)} **** **** ****</Card.Title></> :
-                                        <>
-                                            <Form.Group className="mb-3 my-3 mt-auto" controlId="cardNumber">
-                                                <Form.Control type="cardNumber"
-                                                              placeholder="Enter your credit card number"
-                                                              value={cardNumber}
-                                                              onChange={e => setCardNumber(e.target.value)}/>
-                                            </Form.Group>
-                                            <Form.Group className="mb-3 my-3 mt-auto" controlId="cardValidityDate">
-                                                <Form.Control type="cardValidityDate"
-                                                              placeholder="Card validity (MM/YYYY)"
-                                                              value={cardValidityDate}
-                                                              onChange={e => setCardValidityDate(e.target.value)}/>
-                                            </Form.Group>
-                                            <Form.Group className="mb-3 my-3 mt-auto" controlId="securityCode">
-                                                <Form.Control type="securityCode" placeholder="cvc/cvv"
-                                                              value={securityCode}
-                                                              onChange={e => setSecurityCode(e.target.value)}/>
-                                            </Form.Group>
-                                        </>
-                                    }
-                                    <Button variant="primary" type="submit" className="mt-auto mb-3">
-                                        Confirm subscription
-                                    </Button>
-                                    <Button variant="primary" className="mt-auto" onClick={declineHandler}>
-                                        Decline
-                                    </Button>
-                                </Form>
-                            </Card.Body>
-                        </Card>
-                    </ContentContainer> : <></>
-                }
+            {subscriptionIndex >= 0 ?
+                <ContentContainer>
+                    <Card className="h-100">
+                        <Card.Header>Payment details</Card.Header>
+                        <Card.Body className="d-flex flex-column">
+                            {error ? <Card.Text className="error">{errorMessage}</Card.Text> : <></>}
+                            <Form className="d-flex flex-column" onSubmit={submitHandler}>
+                                {payment.cardNumber ? <><Card.Title>Card number
+                                        is {payment.cardNumber.slice(0, 4)} **** **** ****</Card.Title></> :
+                                    <>
+                                        <Form.Group className="mb-3 my-3 mt-auto" controlId="cardNumber">
+                                            <Form.Control type="cardNumber"
+                                                          placeholder="Enter your credit card number"
+                                                          value={cardNumber}
+                                                          onChange={e => setCardNumber(e.target.value)}/>
+                                        </Form.Group>
+                                        <Form.Group className="mb-3 my-3 mt-auto" controlId="cardValidityDate">
+                                            <Form.Control type="cardValidityDate"
+                                                          placeholder="Card validity (MM/YYYY)"
+                                                          value={cardValidityDate}
+                                                          onChange={e => setCardValidityDate(e.target.value)}/>
+                                        </Form.Group>
+                                        <Form.Group className="mb-3 my-3 mt-auto" controlId="securityCode">
+                                            <Form.Control type="securityCode" placeholder="cvc/cvv"
+                                                          value={securityCode}
+                                                          onChange={e => setSecurityCode(e.target.value)}/>
+                                        </Form.Group>
+                                    </>
+                                }
+                                <Button variant="primary" type="submit" className="mt-auto mb-3">
+                                    Confirm subscription
+                                </Button>
+                                <Button variant="primary" className="mt-auto" onClick={declineHandler}>
+                                    Decline
+                                </Button>
+                            </Form>
+                        </Card.Body>
+                    </Card>
+                </ContentContainer> : <></>
+            }
         </div>
     )
 }

@@ -1,13 +1,14 @@
 import {
     USER_SIGNIN_FAIL,
     USER_SIGNIN_REQUEST,
-    USER_SIGNIN_SUCCESS, USER_SIGNOUT,
+    USER_SIGNIN_SUCCESS,
+    USER_SIGNOUT,
     USER_SIGNUP_REQUEST,
     USER_SIGNUP_SUCCESS
 } from "../store/constants";
 import {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
-import { RootState } from "../store/store";
+import {RootState} from "../store/store";
 import AuthenticationService from "../services/identity/AuthenticationService";
 
 export const signIn = (email: string, password: string): ThunkAction<Promise<void>, RootState, unknown, AnyAction> =>

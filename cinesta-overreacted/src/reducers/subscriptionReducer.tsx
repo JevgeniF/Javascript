@@ -1,9 +1,4 @@
-import {
-    SUBSCRIPTION_DELETE,
-    SUBSCRIPTION_FAIL,
-    SUBSCRIPTION_REQUEST,
-    SUBSCRIPTION_SUCCESS
-} from "../store/constants";
+import {SUBSCRIPTION_DELETE, SUBSCRIPTION_FAIL, SUBSCRIPTION_REQUEST, SUBSCRIPTION_SUCCESS} from "../store/constants";
 import {Subscription} from "../models/Subscription";
 
 export interface SubscriptionState {
@@ -18,15 +13,15 @@ interface Action {
 }
 
 // @ts-ignore
-export const subscriptionReducer = (state: SubscriptionState = { subscriptions: {}}
+export const subscriptionReducer = (state: SubscriptionState = {subscriptions: {}}
     , action: Action) => {
     switch (action.type) {
         case SUBSCRIPTION_REQUEST:
-            return { loading: true }
+            return {loading: true}
         case SUBSCRIPTION_SUCCESS:
-            return { loading: false, subscriptions: action.payload }
+            return {loading: false, subscriptions: action.payload}
         case SUBSCRIPTION_FAIL:
-            return { loading: false, error: action.payload }
+            return {loading: false, error: action.payload}
         case SUBSCRIPTION_DELETE:
             return {subscription: action.payload}
         default:

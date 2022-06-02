@@ -23,17 +23,17 @@ const Header = () => {
     const firstName = user ? user.name : null
 
     const sub = useSelector<RootState, SubscriptionState>(state => state.subscription)
-    let { subscriptions } = sub
+    let {subscriptions} = sub
 
     const userSub = useSelector<RootState, UserSubscriptionState>(state => state.userSubscription)
-    const { userSubscription } = userSub
+    const {userSubscription} = userSub
 
     const paymentDetails = useSelector<RootState, PaymentDetailsState>(state => state.paymentDetails)
-    const { payment } = paymentDetails
+    const {payment} = paymentDetails
 
     useEffect(() => {
-            if (subscriptions !== null && subscriptions !== undefined && subscriptions[0] && !accountRequest) {
-                history.push('/subscribe')
+        if (subscriptions !== null && subscriptions !== undefined && subscriptions[0] && !accountRequest) {
+            history.push('/subscribe')
         }
 
     }, [subscriptions, history, userSubscription, payment, accountRequest])
@@ -74,7 +74,6 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav">
                     {firstName ? <Nav className="ms-auto">
-                            <Nav.Link href="/profiles">Profiles</Nav.Link>
                             <Nav.Link onClick={subscribeHandler}>Subscription</Nav.Link>
                             <Nav.Link onClick={accountHandler}>Account</Nav.Link>
                             <Nav.Link onClick={signOutHandler} href="/">Sign Out</Nav.Link>

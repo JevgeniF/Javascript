@@ -1,9 +1,8 @@
-import {createStore, combineReducers, applyMiddleware} from 'redux'
+import {applyMiddleware, combineReducers, createStore} from 'redux'
 import thunk from "redux-thunk";
 import {composeWithDevTools} from "redux-devtools-extension";
 import {userSignReducer} from "../reducers/userReducer";
 import AuthenticationService from '../services/identity/AuthenticationService';
-import {profileReducer} from "../reducers/profileReducer";
 import {paymentDetailsReducer} from "../reducers/paymentDetailsReducer";
 import {subscriptionReducer} from "../reducers/subscriptionReducer";
 import {userSubscriptionReducer} from "../reducers/userSubscriptionReducer";
@@ -13,7 +12,6 @@ const reducers = combineReducers({
     userSubscription: userSubscriptionReducer,
     subscription: subscriptionReducer,
     paymentDetails: paymentDetailsReducer,
-    profile: profileReducer
 
 })
 

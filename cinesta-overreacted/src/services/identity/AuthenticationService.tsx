@@ -9,7 +9,7 @@ export default class AuthenticationService {
             email: email,
             password: password
         }).then(response => {
-            console.log('API Sign In status: '  + response.status)
+            console.log('API Sign In status: ' + response.status)
             return response.data
         }).then(data => {
             return data as User
@@ -23,7 +23,7 @@ export default class AuthenticationService {
             email: email,
             password: password
         }).then(response => {
-            console.log('API Sign Up status: '  + response.status)
+            console.log('API Sign Up status: ' + response.status)
             return response.data
         }).then(data => {
             return data as User
@@ -37,7 +37,7 @@ export default class AuthenticationService {
             jwt: user.token,
             refreshtoken: user.refreshToken
         }).then(response => {
-            console.log('API Token Refresh status: '  + response.status)
+            console.log('API Token Refresh status: ' + response.status)
             return response.data
         }).then(data => {
             return data as User

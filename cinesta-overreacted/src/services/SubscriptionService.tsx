@@ -14,7 +14,7 @@ export default class SubscriptionService {
 
         return await axios.get(API_SERVICE_URL + 'subscriptions' + culture, axiosJwt)
             .then((response) => {
-                console.log('API Get Subscriptions status: '  + response.status)
+                console.log('API Get Subscriptions status: ' + response.status)
                 return response.data
             }).then(data => {
                 return data as Subscription[];
@@ -28,7 +28,7 @@ export default class SubscriptionService {
 
         return await axios.get(API_SERVICE_URL + 'usersubscriptions' + culture, axiosJwt)
             .then((response) => {
-                console.log('API Get User Subscription status: '  + response.status)
+                console.log('API Get User Subscription status: ' + response.status)
                 return response.data
             }).then(data => {
                 return data as UserSubscription;
@@ -52,17 +52,8 @@ export default class SubscriptionService {
 
         return await axios.delete(API_SERVICE_URL + 'usersubscriptions/' + subscriptionId, axiosJwt)
             .then((response) => {
-                console.log('API Get User Subscription status: '  + response.status)
+                console.log('API Get User Subscription status: ' + response.status)
                 return response.status
             })
-    }
-
-    static async SaveUserSubscriptionToLocalStorage(userSubscription: UserSubscription): Promise<void> {
-        localStorage.setItem("user_subscription", JSON.stringify(userSubscription));
-    }
-
-    static RestoreUserSubscriptionFromLocalStorage(): UserSubscription {
-        // @ts-ignore
-        return JSON.parse(localStorage.getItem("user_subscription")) as UserSubscription;
     }
 }

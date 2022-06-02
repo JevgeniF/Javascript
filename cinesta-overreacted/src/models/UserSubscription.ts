@@ -1,9 +1,9 @@
 import {Subscription} from "./Subscription";
 
 interface AppUser {
-  appUserId: string;
-  name: string;
-  surname: string
+    appUserId: string;
+    name: string;
+    surname: string
 }
 
 export interface UserSubscription {

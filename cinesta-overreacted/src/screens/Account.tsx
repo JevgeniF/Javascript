@@ -18,23 +18,23 @@ const Account = () => {
     const history = useHistory()
 
     const userSign = useSelector<RootState, UserState>(state => state.userSign)
-    const { user } = userSign
+    const {user} = userSign
     const firstName = user ? user.name : null
     const lastName = user ? user.surname : null
     const email = user ? user.email : null
 
     const userSub = useSelector<RootState, UserSubscriptionState>(state => state.userSubscription)
-    const { userSubscription } = userSub
+    const {userSubscription} = userSub
     const subscriptionName = userSubscription && userSubscription.subscription ? userSubscription.subscription.naming : null
-    const expirationDateTime = userSubscription ? Date.parse(userSubscription.expirationDateTime): Date.now()
+    const expirationDateTime = userSubscription ? Date.parse(userSubscription.expirationDateTime) : Date.now()
     const subscriptionValidity = moment.utc(expirationDateTime).local().format('DD-MM-YYYY')
 
     const paymentDet = useSelector<RootState, PaymentDetailsState>(state => state.paymentDetails)
-    const { payment } = paymentDet
+    const {payment} = paymentDet
     const cardNumber = payment && payment.cardNumber ? payment.cardNumber.slice(0, 4) + ' **** **** ****' : null
 
     const sub = useSelector<RootState, SubscriptionState>(state => state.subscription)
-    const { subscriptions } = sub
+    const {subscriptions} = sub
 
     useEffect(() => {
         if (subscriptions !== null && subscriptions !== undefined && subscriptions[0]) {
@@ -72,10 +72,10 @@ const Account = () => {
                         <Card.Body>
                             {firstName ?
                                 <>
-                                <Card.Title>User: {firstName} {lastName} </Card.Title>
-                                <Card.Text>
-                                    Account: {email}
-                                </Card.Text>
+                                    <Card.Title>User: {firstName} {lastName} </Card.Title>
+                                    <Card.Text>
+                                        Account: {email}
+                                    </Card.Text>
                                 </>
                                 : <></>
                             }
@@ -90,7 +90,7 @@ const Account = () => {
                                 <>
                                     <Card.Title>Subscription: {subscriptionName} </Card.Title>
                                     <Card.Text>
-                                        Your subscription is valid till  {subscriptionValidity}
+                                        Your subscription is valid till {subscriptionValidity}
                                     </Card.Text>
                                     <Button variant="primary" className="mt-auto" onClick={unsubscribeHandler}>
                                         Unsubscribe</Button>
@@ -111,20 +111,21 @@ const Account = () => {
                     <Card className="h-100">
                         <Card.Header>Payment</Card.Header>
                         <Card.Body className="d-flex flex-column">
-                        {cardNumber ?
-                            <>
-                            <Card.Title>Your card: {cardNumber}</Card.Title>
-                            <Card.Text>
-                                You can remove card if you no longer require it.
-                            </Card.Text>
-                            <Button variant="primary" className="mt-auto" onClick={removalHandler}>Remove card</Button>
-                        </>
-                        : <>
-                                <Card.Title>You have no stored cards</Card.Title>
-                                <Card.Text>
-                                    No need to add any till subscription renewal.
-                                </Card.Text>
-                            </>
+                            {cardNumber ?
+                                <>
+                                    <Card.Title>Your card: {cardNumber}</Card.Title>
+                                    <Card.Text>
+                                        You can remove card if you no longer require it.
+                                    </Card.Text>
+                                    <Button variant="primary" className="mt-auto" onClick={removalHandler}>Remove
+                                        card</Button>
+                                </>
+                                : <>
+                                    <Card.Title>You have no stored cards</Card.Title>
+                                    <Card.Text>
+                                        No need to add any till subscription renewal.
+                                    </Card.Text>
+                                </>
                             }
                         </Card.Body>
                     </Card>

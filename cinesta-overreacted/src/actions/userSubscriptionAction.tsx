@@ -4,7 +4,8 @@ import {AnyAction} from "redux";
 import {
     USER_SUBSCRIPTION_DELETE,
     USER_SUBSCRIPTION_FAIL,
-    USER_SUBSCRIPTION_REQUEST, USER_SUBSCRIPTION_SUCCESS
+    USER_SUBSCRIPTION_REQUEST,
+    USER_SUBSCRIPTION_SUCCESS
 } from "../store/constants";
 import SubscriptionService from "../services/SubscriptionService";
 

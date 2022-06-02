@@ -1,12 +1,7 @@
 import {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {RootState} from "../store/store";
 import {AnyAction} from "redux";
-import {
-    PAYMENT_DELETE,
-    PAYMENT_FAIL,
-    PAYMENT_REQUEST,
-    PAYMENT_SUCCESS,
-} from "../store/constants";
+import {PAYMENT_DELETE, PAYMENT_FAIL, PAYMENT_REQUEST, PAYMENT_SUCCESS,} from "../store/constants";
 import PaymentService from "../services/PaymentService";
 
 export const getPaymentDetails = (): ThunkAction<Promise<void>, RootState, unknown, AnyAction> =>
